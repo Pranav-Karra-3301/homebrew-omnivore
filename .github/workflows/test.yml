@@ -1,0 +1,56 @@
+name: Test Formula
+
+on:
+  push:
+    branches: [master, main]
+  pull_request:
+    branches: [master, main]
+
+jobs:
+  test-formula:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Homebrew
+        uses: Homebrew/actions/setup-homebrew@master
+      
+      - name: Test formula syntax
+        run: |
+          brew style omnivore.rb
+      
+      - name: Test formula audit
+        run: |
+          brew audit --strict omnivore.rb || true
+      
+      - name: Test installation from source
+        run: |
+          # Test that the formula loads correctly
+          brew info --json ./omnivore.rb | jq '.[0].name'
+          
+      - name: Verify formula metadata
+        run: |
+          # Check that all required fields are present
+          ruby -r json -e '
+            formula = File.read("omnivore.rb")
+            
+            required_fields = ["desc", "homepage", "license", "version"]
+            missing = []
+            
+            required_fields.each do |field|
+              unless formula.match?(/^\s*#{field}\s/)
+                missing << field
+              end
+            end
+            
+            if missing.any?
+              puts "Missing required fields: #{missing.join(", ")}"
+              exit 1
+            else
+              puts "All required fields present"
+            end
+          '

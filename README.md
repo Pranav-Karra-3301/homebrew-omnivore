@@ -1,5 +1,8 @@
 # Homebrew Omnivore
 
+[![Test Formula](https://github.com/Pranav-Karra-3301/homebrew-omnivore/actions/workflows/test.yml/badge.svg)](https://github.com/Pranav-Karra-3301/homebrew-omnivore/actions/workflows/test.yml)
+[![Update Formula](https://github.com/Pranav-Karra-3301/homebrew-omnivore/actions/workflows/update-formula.yml/badge.svg)](https://github.com/Pranav-Karra-3301/homebrew-omnivore/actions/workflows/update-formula.yml)
+
 This is the Homebrew tap for [Omnivore](https://github.com/Pranav-Karra-3301/omnivore), a universal Rust web crawler and knowledge graph builder.
 
 ## Installation
